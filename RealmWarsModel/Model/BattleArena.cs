@@ -50,7 +50,7 @@ namespace RealmWarsModel
 
         public void add_combatant(ICombatant combatant)
         {
-            //timeline.
+            Combatants.Add(combatant);
         }
 
         public List<ICombatant> get_combatants()

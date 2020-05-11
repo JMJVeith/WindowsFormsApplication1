@@ -11,7 +11,7 @@ namespace RealmWarsTestView
     {
         public BattleArena battle { get; }
 
-        public List<ICombatant> combatants { get; }
+        public List<ICombatant> combatants { get; set; }
 
         public BattleArenaWrapper()
         {
@@ -48,7 +48,7 @@ namespace RealmWarsTestView
             PCCombatant new_combatant = new PCCombatant("New Combatant", new Attributes(8, 12));
 
             battle.add_combatant(new_combatant);
-            combatants.Add(new_combatant);
+            combatants = battle.get_combatants();
 
             return new_combatant;
         }

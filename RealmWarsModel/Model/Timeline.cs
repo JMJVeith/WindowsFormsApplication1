@@ -1,5 +1,5 @@
 ﻿///Creates a Timeline for the Battle Arena Model
-///Creates a List ordered based on speed
+///Creates a List ordered based off of time until next turn
 ///Functions:
 ///     
 
@@ -33,7 +33,7 @@ namespace RealmWarsModel
 
         private void sort()
         {
-            turns.Sort((x, y) => x.time_until_turn.CompareTo(y.time_until_turn));// x.owner.attributes.speed[0].CompareTo(-1 * y.owner.attributes.speed[0]));
+            turns.Sort((x, y) => -1 * x.time_until_turn.CompareTo(y.time_until_turn));// x.owner.attributes.speed[0].CompareTo(-1 * y.owner.attributes.speed[0]));
         }
 
         public void next_turn()
@@ -65,12 +65,16 @@ namespace RealmWarsModel
 
             next_turn_time = turns[0].time_until_turn;
 
+
+
             for (int i = 0; i < turns.Count; i++)
             {
                 turns[i].time_until_turn -= next_turn_time;
                 
                 Console.WriteLine("" + turns[i].time_until_turn);
             }
+
+
             for (int i = 0; i < turns.Count; i++)
             {
                 if (turns[i].time_until_turn < 0)
@@ -78,11 +82,12 @@ namespace RealmWarsModel
                     turns[i].time_until_turn = turns[i].owner.calc_turn_timing(500);
                 }
             }
-
         }
 
         private void fill()
         {
+            turns.Clear();
+
             foreach (ICombatant combatant in battle.get_combatants())
             {
                 turns.Add(new PlayerTurn(combatant));
