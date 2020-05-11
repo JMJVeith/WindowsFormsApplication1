@@ -9,16 +9,21 @@ namespace RealmWarsTestView
 {
     class TimelineWrapper
     {
-        Timeline timeline;
+        public Timeline timeline { get; }
 
-        public TimelineWrapper(BattleArena b)
+        public TimelineWrapper(BattleArenaWrapper b)
         {
-            this.timeline = new Timeline(b);
+            this.timeline = new Timeline(b.battle);
         }
 
         public ICombatant getEnemy()
         {
             return timeline.getEnemy();
+        }
+
+        public void update_timeline()
+        {
+            timeline.update();
         }
     }
 }

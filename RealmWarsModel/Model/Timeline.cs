@@ -15,29 +15,31 @@ namespace RealmWarsModel
     {
         private readonly BattleArena battle;
 
-        public List<PlayerTurn> timeline { get; set; }
+        public List<Turn> turns { get; set; }
 
 
         public Timeline(BattleArena battle)
         {
             this.battle = battle;
-            timeline = new List<PlayerTurn>();
+            turns = new List<Turn>();
 
             fill();
             sort();
+
+            next_turn_time = turns[0].time_until_turn;
         }
 
-        public int nextTurnTime { get; set; }
+        public double next_turn_time { get; set; }
 
         private void sort()
         {
-            timeline.Sort((x, y) => x.owner.attributes.speed[0].CompareTo(-1 * y.owner.attributes.speed[0]));
+            turns.Sort((x, y) => x.time_until_turn.CompareTo(y.time_until_turn));// x.owner.attributes.speed[0].CompareTo(-1 * y.owner.attributes.speed[0]));
         }
 
         public void next_turn()
         {
             end_turn();
-            start_turn();
+            start_next_turn();
         }
 
         /// <summary>
@@ -46,59 +48,101 @@ namespace RealmWarsModel
         /// <returns>The Next Turn in turn order, including the current turn</returns>
         internal Turn getNextTurn()
         {
-            return timeline[0].owner.makeTurn();
+            return turns[0].owner.makeTurn();
         }
 
         /// <summary>
-        /// Goes through all the Turns in the timeline and progresses time forward to the start of the next turn
+        /// Goes through all the Turns in the timeline and progresses time forward by a fixed amount (to the start of the next turn)
+        /// gets called after each attack
+        /// updates everything in the list
         /// </summary>
-        /// <param name="time"></param>
-        public void update(int time)
+        public void update()
         {
-            for( int i = 0; i < timeline.Count; i++)
+            foreach (Turn t in turns)
             {
-                if (timeline[0].timeUntilTurn < time)
-                {
-                    throw new Exception("update failed: argument time too large");
-                }
-                timeline[0].timeUntilTurn -= time;
+                Console.WriteLine("" + t.time_until_turn);
             }
-            //battle.updateTimeline(this);
+
+            next_turn_time = turns[0].time_until_turn;
+
+            for (int i = 0; i < turns.Count; i++)
+            {
+                turns[i].time_until_turn -= next_turn_time;
+                
+                Console.WriteLine("" + turns[i].time_until_turn);
+            }
+            for (int i = 0; i < turns.Count; i++)
+            {
+                if (turns[i].time_until_turn < 0)
+                {
+                    turns[i].time_until_turn = turns[i].owner.calc_turn_timing(500);
+                }
+            }
+
         }
 
         private void fill()
         {
             foreach (ICombatant combatant in battle.get_combatants())
             {
-                timeline.Add(new PlayerTurn(combatant));
+                turns.Add(new PlayerTurn(combatant));
             }
         }
 
         public ICombatant getActivePlayer()
         {
-            return timeline[0].owner;
+            return turns[0].owner;
         }
 
         public ICombatant getEnemy()
         {
-            return timeline[1].owner;
+            return turns[1].owner;
         }
 
         private void stop_turn()
         {
-            timeline[0].stopTurn();
+            turns[0].stopTurn();
         }
 
-        public void start_turn()
+        public void start_next_turn()
         {
-            timeline[0].startTurn();
+            turns[0].startTurn();
         }
 
         public void end_turn()
         {
             stop_turn();
-            timeline.Add(timeline[0]);
-            timeline.RemoveAt(0);
+            new_turn();
+            sort();
+
+            next_turn_time = turns[0].time_until_turn;
+        }
+
+        private void new_turn()
+        {
+            //Console.WriteLine("" + turns[0].time_until_turn);
+            Turn t = turns[0].copy();
+            turns.Add(t);
+            //turns.Add(new PlayerTurn(turns[0].owner));
+            //turns are mutually exclusive
+            turns.RemoveAt(0);
+            //next_turn_time = turns[0].time_until_turn;
+            //Console.WriteLine("" + turns[0].time_until_turn);
+            //foreach(Turn turn in turns)
+            //{
+            //    Console.WriteLine("" + turn.owner.name);
+            //}
+        }
+
+        private void clone_turns()
+        {
+            List<Turn> t = turns;
+            foreach (PlayerTurn turn in turns)
+            {
+                turn.time_until_turn = 4;
+                t.Add(turn);
+            }
+            turns = t;
         }
     }
 }

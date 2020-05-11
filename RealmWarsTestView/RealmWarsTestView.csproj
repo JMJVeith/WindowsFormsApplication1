@@ -82,6 +82,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RealmWarsModelTest\RealmWarsModelTest.csproj">
+      <Project>{ed33d772-b599-4da2-b280-523680f5d6a2}</Project>
+      <Name>RealmWarsModelTest</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RealmWarsModel\RealmWarsModel.csproj">
       <Project>{abf1b56e-3bec-40ba-a482-8ba5bb71840e}</Project>
       <Name>RealmWarsModel</Name>

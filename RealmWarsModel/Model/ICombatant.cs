@@ -18,7 +18,7 @@ namespace RealmWarsModel
 
         string activate(ICombatant target);
 
-        double calc_time_cost(double baseTime);
+        double calc_turn_timing(double baseTime);
 
         int get_health();
 

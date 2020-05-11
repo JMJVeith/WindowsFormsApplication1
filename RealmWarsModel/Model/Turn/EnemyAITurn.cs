@@ -25,6 +25,12 @@ namespace RealmWarsModel
         }
 
         override
+        public Turn copy()
+        {
+            return this;
+        }
+
+        override
         public void startTurn()
         {
 

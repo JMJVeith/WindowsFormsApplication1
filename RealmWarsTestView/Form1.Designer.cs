@@ -34,7 +34,7 @@ namespace RealmWarsTestView
             this.button1 = new System.Windows.Forms.Button();
             this.ConsoleWindow = new System.Windows.Forms.ListBox();
             this.AttackButton = new System.Windows.Forms.Button();
-            this.Timeline = new System.Windows.Forms.ListBox();
+            this.timeline_list_box = new System.Windows.Forms.ListBox();
             this.turn_progress_bar = new System.Windows.Forms.ProgressBar();
             this.add_combatant_btn = new System.Windows.Forms.Button();
             this.combatant_display = new System.Windows.Forms.ListBox();
@@ -73,14 +73,14 @@ namespace RealmWarsTestView
             // 
             // Timeline
             // 
-            this.Timeline.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.Timeline.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Timeline.ItemHeight = 20;
-            this.Timeline.Location = new System.Drawing.Point(12, 232);
-            this.Timeline.MinimumSize = new System.Drawing.Size(200, 200);
-            this.Timeline.Name = "Timeline";
-            this.Timeline.Size = new System.Drawing.Size(324, 184);
-            this.Timeline.TabIndex = 7;
+            this.timeline_list_box.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.timeline_list_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.timeline_list_box.ItemHeight = 20;
+            this.timeline_list_box.Location = new System.Drawing.Point(12, 232);
+            this.timeline_list_box.MinimumSize = new System.Drawing.Size(200, 200);
+            this.timeline_list_box.Name = "Timeline";
+            this.timeline_list_box.Size = new System.Drawing.Size(324, 184);
+            this.timeline_list_box.TabIndex = 7;
             // 
             // turn_progress_bar
             // 
@@ -120,7 +120,7 @@ namespace RealmWarsTestView
             this.Controls.Add(this.combatant_display);
             this.Controls.Add(this.add_combatant_btn);
             this.Controls.Add(this.turn_progress_bar);
-            this.Controls.Add(this.Timeline);
+            this.Controls.Add(this.timeline_list_box);
             this.Controls.Add(this.AttackButton);
             this.Controls.Add(this.ConsoleWindow);
             this.Controls.Add(this.button1);
@@ -137,7 +137,7 @@ namespace RealmWarsTestView
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ListBox ConsoleWindow;
         private System.Windows.Forms.Button AttackButton;
-        private System.Windows.Forms.ListBox Timeline;
+        private System.Windows.Forms.ListBox timeline_list_box;
         private System.Windows.Forms.ProgressBar turn_progress_bar;
         private System.Windows.Forms.Button add_combatant_btn;
         private System.Windows.Forms.ListBox combatant_display;

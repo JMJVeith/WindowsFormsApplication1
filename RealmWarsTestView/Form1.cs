@@ -9,8 +9,8 @@ namespace RealmWarsTestView
     partial class Form1 : Form
     {
         private BattleArenaWrapper battle_wrapper;
-        //private BattleArena Battle;
         private BackgroundWorker turn_progress_worker;
+        private TimelineWrapper timeline_wrapper;
 
 
         public Form1()
@@ -27,8 +27,6 @@ namespace RealmWarsTestView
             turn_progress_worker.ProgressChanged += updateBar;
             turn_progress_worker.RunWorkerCompleted += updateBar;
             turn_progress_worker.WorkerReportsProgress = true;
-
-            
         }
 
         private void StartButton_Click(object sender, EventArgs e)
@@ -36,6 +34,9 @@ namespace RealmWarsTestView
             ConsoleWindow.Items.Clear();
 
             this.battle_wrapper = new BattleArenaWrapper();
+            this.timeline_wrapper = new TimelineWrapper(battle_wrapper);
+
+            combatant_display.Items.Clear();
 
             foreach (ICombatant combatant in battle_wrapper.combatants)
             {
@@ -43,6 +44,7 @@ namespace RealmWarsTestView
             }
 
             display_combatants();
+            update_timeline_list();
         }
 
         public void printStuff(string msg)
@@ -51,16 +53,26 @@ namespace RealmWarsTestView
             return;
         }
 
-        public void updateTimeline(Timeline t)
+        public void update_timeline_list()
         {
-            Timeline.Items.Clear();
+            timeline_wrapper.update_timeline();
 
-            foreach(PlayerTurn playerturn in t.timeline)
+            //foreach (Object item in timeline_list_box.Items)
+            //{
+            //    Console.WriteLine(item.ToString());
+            //}
+
+            timeline_list_box.Items.Clear();
+
+            foreach(PlayerTurn turn in timeline_wrapper.timeline.turns)
             {
-                Timeline.Items.Add("Player: " + playerturn.owner.name + ", Time Until Turn: " + (int)(playerturn.timeUntilTurn*1000));
+                timeline_list_box.Items.Add("Player: " + turn.owner.name + ", Time Until Turn: " + (int)(turn.time_until_turn * 1000));
             }
-            
-            return;
+
+            //foreach (Object item in timeline_list_box.Items)
+            //{
+            //    Console.WriteLine(item.ToString());
+            //}
         }
 
         private void AttackButton_Click(object sender, EventArgs e)
@@ -70,6 +82,7 @@ namespace RealmWarsTestView
             string msg = battle_wrapper.attack();
 
             printStuff(msg);
+            update_timeline_list();
             display_combatants();
 
             //end player turn

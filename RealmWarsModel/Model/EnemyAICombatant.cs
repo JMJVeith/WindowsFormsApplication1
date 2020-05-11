@@ -46,7 +46,7 @@ namespace RealmWarsModel
             return attack.activate(target);
         }
 
-        public double calc_time_cost(double baseTime)
+        public double calc_turn_timing(double baseTime)
         {
             double time = baseTime / (baseTime + (500 * Math.Pow(1.05, attributes.agigity)));
             return time;

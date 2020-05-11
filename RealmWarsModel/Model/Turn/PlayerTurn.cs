@@ -18,17 +18,17 @@ namespace RealmWarsModel
     {
         //private readonly BattleArena battle;
 
-        public double timeUntilTurn { get; set; }
+        //public double time_until_turn { get; set; }
 
         /// <summary>
         /// The phase where no penalty is applied to speed for acting slowly
         /// </summary>
-        private readonly Phase freePhase;
+        private Phase freePhase;
 
         /// <summary>
         /// The main action phase.  Every millisecond spent in this phase delays your next turn.
         /// </summary>
-        private readonly Phase ActionPhase;
+        private Phase ActionPhase;
 
 
         private bool timeOut = false;
@@ -39,9 +39,8 @@ namespace RealmWarsModel
         public PlayerTurn(ICombatant owner)//, BattleArena battle)
         {
             this.phases = new List<Phase>();
-            //this.battle = battle;
             this.owner = owner;
-            timeUntilTurn = this.owner.calc_time_cost(500);
+            time_until_turn = this.owner.calc_turn_timing(500);
 
             current_phase = 0;
             timeOut = false;
@@ -51,6 +50,27 @@ namespace RealmWarsModel
 
             phases.Add(freePhase);
             phases.Add(ActionPhase);
+        }
+
+        public override Turn copy()
+        {
+            //this.phases = new List<Phase>();
+            //this.owner = owner;
+            time_until_turn = this.owner.calc_turn_timing(500);
+
+            current_phase = 0;
+            timeOut = false;
+
+            freePhase = new Phase(200, new EventHandler(next_phase));
+            ActionPhase = new Phase(1000, new EventHandler(next_phase));
+
+            phases.Clear();
+            phases.Add(freePhase);
+            phases.Add(ActionPhase);
+
+            //Console.WriteLine("" + time_until_turn);
+
+            return new PlayerTurn(this.owner);
         }
 
         override

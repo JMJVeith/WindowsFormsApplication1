@@ -14,6 +14,10 @@ namespace RealmWarsModel
 
         public int current_phase { get; set; }
 
+        public double time_until_turn { get; internal set; }
+
+        public abstract Turn copy();
+
         public abstract void startTurn();
 
         public abstract void stopTurn();

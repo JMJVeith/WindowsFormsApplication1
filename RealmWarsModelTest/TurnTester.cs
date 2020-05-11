@@ -8,7 +8,7 @@ namespace RealmWarsModelTest
     public class TurnTester
     {
         [TestMethod]
-        public void TestMethod1()
+        public void run_tests()
         {
             PCCombatant combatant = new PCCombatant("James",new Attributes(8,12));
             Turn turn = new PlayerTurn(combatant);
