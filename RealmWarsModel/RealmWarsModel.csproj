@@ -52,6 +52,7 @@
     <Compile Include="Model\PCCombatant.cs" />
     <Compile Include="Model\PlayerCharacter.cs" />
     <Compile Include="Model\Timeline.cs" />
+    <Compile Include="Model\TimelineObservable.cs" />
     <Compile Include="Model\Turn\EnemyAITurn.cs" />
     <Compile Include="Model\Turn\Phase.cs" />
     <Compile Include="Model\Turn\PhaseTime.cs" />

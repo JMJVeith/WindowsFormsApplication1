@@ -97,13 +97,6 @@ namespace RealmWarsModel
             return critCount;
         }
 
-        /// <summary>
-        /// Helper function that contains the Critical Strike Chance Formula
-        /// </summary>
-        /// <param name="critCount"></param>
-        /// <param name="Attacker"></param>
-        /// <param name="target"></param>
-        /// <returns>Percent chance that you crit</returns>
         private int CalcCritChance(int critCount, ICombatant target)
         {
             int Carry = (critCount + 1) * target.attributes.dodge[0];
@@ -114,14 +107,6 @@ namespace RealmWarsModel
             return (int)(10 * user.attributes.hit[1] * user.attributes.hit[0] / (double)(user.attributes.hit[0] + Carry));
         }
 
-        /// <summary>
-        /// Helper Function that handles the Damage Calculations
-        /// </summary>
-        /// <param name="critCount"></param>
-        /// <param name="Attacker"></param>
-        /// <param name="Target"></param>
-        /// <param name="r"></param>
-        /// <returns></returns>
         private int CalcDamage(int critCount)
         {
             return rnd.Next(user.attributes.AttackDamage[0], user.attributes.AttackDamage[1]) *

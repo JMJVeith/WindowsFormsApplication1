@@ -1,5 +1,6 @@
 ﻿using RealmWarsModel;
 using System;
+using System.Collections;
 using System.ComponentModel;
 using System.Threading;
 using System.Windows.Forms;
@@ -31,10 +32,11 @@ namespace RealmWarsTestView
 
         private void StartButton_Click(object sender, EventArgs e)
         {
+            AttackButton.Enabled = true;
             ConsoleWindow.Items.Clear();
 
             this.battle_wrapper = new BattleArenaWrapper();
-            this.timeline_wrapper = new TimelineWrapper(battle_wrapper);
+            this.timeline_wrapper = new TimelineWrapper(this, battle_wrapper);
 
             combatant_display.Items.Clear();
 
@@ -44,45 +46,44 @@ namespace RealmWarsTestView
             }
 
             display_combatants();
-            update_timeline_list();
+            //update_timeline_list();
         }
 
         public void printStuff(string msg)
         {
             ConsoleWindow.Items.Insert(0,msg);
-            return;
         }
 
-        public void update_timeline_list()
+        //public void update_timeline_list()
+        //{
+        //    timeline_list_box.Items.Clear();//n
+
+        //    foreach(String line in timeline_wrapper.timeline_list())
+        //    {
+        //        timeline_list_box.Items.Add(line);//n
+        //    }
+        //}
+
+        public void update_timeline_list(IEnumerable timeline_lines)
         {
-            timeline_wrapper.update_timeline();
+            //timeline_list_box.Items.Clear();
 
-            //foreach (Object item in timeline_list_box.Items)
-            //{
-            //    Console.WriteLine(item.ToString());
-            //}
-
-            timeline_list_box.Items.Clear();
-
-            foreach(PlayerTurn turn in timeline_wrapper.timeline.turns)
+            foreach (String line in timeline_lines)
             {
-                timeline_list_box.Items.Add("Player: " + turn.owner.name + ", Time Until Turn: " + (int)(turn.time_until_turn * 1000));
+                timeline_list_box.Items.Add(line);
             }
-
-            //foreach (Object item in timeline_list_box.Items)
-            //{
-            //    Console.WriteLine(item.ToString());
-            //}
+            timeline_list_box.Update();
         }
 
         private void AttackButton_Click(object sender, EventArgs e)
         {
             turn_progress_bar.Value = 0;
+            //update_timeline_list();
 
             string msg = battle_wrapper.attack();
 
             printStuff(msg);
-            update_timeline_list();
+            //update_timeline_list();
             display_combatants();
 
             //end player turn
@@ -97,9 +98,10 @@ namespace RealmWarsTestView
 
         private void dowork_bar(object sender, DoWorkEventArgs e)
         {
-            while (battle_wrapper.get_turn_percentage() < 100)
+            return;
+            while (timeline_wrapper.get_turn_percentage() < 100)
             {
-                turn_progress_worker.ReportProgress((int)battle_wrapper.get_turn_percentage());
+                turn_progress_worker.ReportProgress((int)timeline_wrapper.get_turn_percentage());
                 Thread.Sleep(20);
             }
             return;
@@ -107,19 +109,21 @@ namespace RealmWarsTestView
 
         private void updateBar(object sender, ProgressChangedEventArgs e)
         {
-            turn_progress_bar.Value = e.ProgressPercentage;
+            return;
+            int value = e.ProgressPercentage;
+            turn_progress_bar.Value = value;
             if (e.ProgressPercentage >= 1)
             {
-                turn_progress_bar.Value = e.ProgressPercentage - 1;
-                //printStuff(e.ProgressPercentage.ToString());
+                turn_progress_bar.Value = value - 1;
             }
-            turn_progress_bar.Value = e.ProgressPercentage;
+            turn_progress_bar.Value = value;
             turn_progress_bar.Update();
+            //update_timeline_list();
         }
 
         private void updateBar(object sender, RunWorkerCompletedEventArgs e)
         {
-            //turn_progress_bar.Value = 100;
+            return;
             turn_progress_bar.Update();
         }
 

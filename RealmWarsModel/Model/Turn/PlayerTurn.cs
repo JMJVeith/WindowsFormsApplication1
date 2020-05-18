@@ -81,7 +81,7 @@ namespace RealmWarsModel
         }
 
         override
-        public void stopTurn()
+        public void stop_turn_timers()
         {
             stopped = true;
             dispose();

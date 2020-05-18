@@ -9,10 +9,6 @@ namespace RealmWarsModel
 {
     public class BattleArena
     {
-        private Turn currentTurn;
-
-        //public PlayerCharacter active_character { get; }
-
         public delegate void EventHandler();
 
 
@@ -24,28 +20,28 @@ namespace RealmWarsModel
             Combatants.Add(new PCCombatant(new PlayerCharacter("James")));
             Combatants.Add(new EnemyAICombatant(new PlayerCharacter("Orc")));
 
-            timeline = new Timeline(this);
-
-            currentTurn = timeline.getNextTurn();
+            timeline = new Timeline(Combatants);
         }
 
 
-        public Timeline timeline;// { get; set; }// = new List<PlayerTurn>();
-        private List<ICombatant> Combatants;// { get;}
+
+        public Timeline timeline { get; set; }
+
+        private List<ICombatant> Combatants;
 
 
 
         public string attack(ICombatant enemy)
         {
-            //ends the current turn before the timer runs out
-            currentTurn.stopTurn();
+            //perform action
+            string r_msg = timeline.getActivePlayer().activate(enemy);//only deals damage
 
-            string msg = timeline.getActivePlayer().activate(enemy);
-
+            //updates the timeline values
+            //timeline.update();
             //starts the next turn
             timeline.next_turn();
 
-            return msg;
+            return r_msg;
         }
 
         public void add_combatant(ICombatant combatant)
@@ -57,11 +53,6 @@ namespace RealmWarsModel
         {
 
             return Combatants;
-        }
-
-        public double get_turn_percentage()
-        {
-            return currentTurn.get_turn_percentage();
         }
     }
 }

@@ -32,10 +32,23 @@ namespace RealmWarsModel
         }
 
         public void start_turn() { }
+        public void stop_turn()
+        {
+            //Message timeline - end the turn
+            //  destroy this turn
+            //  create new turn
+            //  sort
+            //Message timeline to set next turn
+            //  
+        }
+        public void end_turn() { }
 
         public string activate(ICombatant enemy)
         {
             return attack.activate(enemy);
+
+            //add turn handling
+            //send request to timeline
         }
 
         public double calc_turn_timing(double baseTime)

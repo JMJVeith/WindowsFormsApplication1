@@ -20,7 +20,7 @@ namespace RealmWarsModel
 
         public abstract void startTurn();
 
-        public abstract void stopTurn();
+        public abstract void stop_turn_timers();
 
         private double total_time()
         {

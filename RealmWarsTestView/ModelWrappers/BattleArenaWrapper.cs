@@ -21,26 +21,7 @@ namespace RealmWarsTestView
 
         public string attack()
         {
-            string r_message = "";
-
-            r_message = battle.attack(battle.timeline.getEnemy());
-
-            return r_message;
-        }
-
-        public double get_turn_percentage()
-        {
-            return battle.get_turn_percentage();
-        }
-
-        public ICombatant getEnemy()
-        {
-            return battle.timeline.getEnemy();
-        }
-
-        public ICombatant getActivePlayer()
-        {
-            return battle.timeline.getActivePlayer();
+            return battle.attack(battle.timeline.getEnemy());
         }
 
         public ICombatant add_combatant()

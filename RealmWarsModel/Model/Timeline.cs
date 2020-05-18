@@ -11,88 +11,66 @@ using System.Threading.Tasks;
 
 namespace RealmWarsModel
 {
-    public class Timeline
+    public class Timeline: IObservable<List<String>>
     {
-        private readonly BattleArena battle;
+        private List<ICombatant> combatants;
+
+        public IObserver<List<String>> observers;
+        private IDisposable unsubscriber;
 
         public List<Turn> turns { get; set; }
 
+        public double next_turn_time { get; set; }
 
-        public Timeline(BattleArena battle)
+
+        public Timeline(List<ICombatant> combatants)
         {
-            this.battle = battle;
+            this.combatants = combatants;
             turns = new List<Turn>();
 
             fill();
             sort();
-
-            next_turn_time = turns[0].time_until_turn;
         }
 
-        public double next_turn_time { get; set; }
+        public void initialize()
+        {
+            set_next_turn();
+
+            update_turn_times();
+        }
 
         private void sort()
         {
-            turns.Sort((x, y) => -1 * x.time_until_turn.CompareTo(y.time_until_turn));// x.owner.attributes.speed[0].CompareTo(-1 * y.owner.attributes.speed[0]));
-        }
-
-        public void next_turn()
-        {
-            end_turn();
-            start_next_turn();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns>The Next Turn in turn order, including the current turn</returns>
-        internal Turn getNextTurn()
-        {
-            return turns[0].owner.makeTurn();
-        }
-
-        /// <summary>
-        /// Goes through all the Turns in the timeline and progresses time forward by a fixed amount (to the start of the next turn)
-        /// gets called after each attack
-        /// updates everything in the list
-        /// </summary>
-        public void update()
-        {
-            foreach (Turn t in turns)
-            {
-                Console.WriteLine("" + t.time_until_turn);
-            }
-
-            next_turn_time = turns[0].time_until_turn;
-
-
-
-            for (int i = 0; i < turns.Count; i++)
-            {
-                turns[i].time_until_turn -= next_turn_time;
-                
-                Console.WriteLine("" + turns[i].time_until_turn);
-            }
-
-
-            for (int i = 0; i < turns.Count; i++)
-            {
-                if (turns[i].time_until_turn < 0)
-                {
-                    turns[i].time_until_turn = turns[i].owner.calc_turn_timing(500);
-                }
-            }
+            turns.Sort((x, y) => x.time_until_turn.CompareTo(y.time_until_turn));
         }
 
         private void fill()
         {
             turns.Clear();
 
-            foreach (ICombatant combatant in battle.get_combatants())
+            foreach (ICombatant combatant in combatants)
             {
                 turns.Add(new PlayerTurn(combatant));
             }
         }
+
+
+        internal void set_next_turn()
+        {
+            next_turn_time = turns[0].time_until_turn;
+        }
+
+        private void update_turn_times()
+        {
+            for (int i = 0; i < turns.Count; i++)
+            {
+                turns[i].time_until_turn -= next_turn_time;
+                //Console.WriteLine(turns[i].time_until_turn.ToString());//good
+            }
+            notify_all();
+            //Console.WriteLine(turns[1].time_until_turn);
+        }
+
 
         public ICombatant getActivePlayer()
         {
@@ -104,50 +82,61 @@ namespace RealmWarsModel
             return turns[1].owner;
         }
 
-        private void stop_turn()
-        {
-            turns[0].stopTurn();
-        }
-
-        public void start_next_turn()
-        {
-            turns[0].startTurn();
-        }
 
         public void end_turn()
         {
-            stop_turn();
-            new_turn();
+            turns[0].stop_turn_timers();//ends phase timers n' shit
+
+            retime_active_player();
             sort();
 
-            next_turn_time = turns[0].time_until_turn;
+            set_next_turn();
+            update_turn_times();
         }
 
-        private void new_turn()
+        public void next_turn()
         {
-            //Console.WriteLine("" + turns[0].time_until_turn);
-            Turn t = turns[0].copy();
-            turns.Add(t);
-            //turns.Add(new PlayerTurn(turns[0].owner));
-            //turns are mutually exclusive
-            turns.RemoveAt(0);
-            //next_turn_time = turns[0].time_until_turn;
-            //Console.WriteLine("" + turns[0].time_until_turn);
-            //foreach(Turn turn in turns)
-            //{
-            //    Console.WriteLine("" + turn.owner.name);
-            //}
+            end_turn();
+            turns[0].startTurn();
         }
 
-        private void clone_turns()
+        private void retime_active_player()
         {
-            List<Turn> t = turns;
-            foreach (PlayerTurn turn in turns)
+            turns[0].time_until_turn = turns[0].owner.calc_turn_timing(500);
+        }
+
+        private List<String> print_timeline()
+        {
+            List<String> s = new List<String>();
+            for (int i = 0; i < turns.Count; i++)
             {
-                turn.time_until_turn = 4;
-                t.Add(turn);
+                //Console.WriteLine((int)(turns[i].time_until_turn * 1000));//solved, get this to the view
+                s.Add(((int)(turns[i].time_until_turn * 1000)).ToString());
             }
-            turns = t;
+            return s;
+        }
+
+        public double get_turn_percentage()
+        {
+            return turns[0].get_turn_percentage();
+        }
+
+
+
+
+
+        public IDisposable Subscribe(IObserver<List<String>> observer)
+        {
+            observers = observer;
+
+            return unsubscriber;
+        }
+
+        private void notify_all()
+        {
+            //Console.WriteLine(turns[1].time_until_turn);
+            observers.OnNext(print_timeline());
+            observers.OnCompleted();
         }
     }
 }

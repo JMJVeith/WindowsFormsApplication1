@@ -7,23 +7,41 @@ using RealmWarsModel;
 
 namespace RealmWarsTestView
 {
-    class TimelineWrapper
+    class TimelineWrapper : IObserver<List<String>>
     {
         public Timeline timeline { get; }
+        private Form1 host;
 
-        public TimelineWrapper(BattleArenaWrapper b)
+        public TimelineWrapper(Form1 host, BattleArenaWrapper b)
         {
-            this.timeline = new Timeline(b.battle);
+            this.host = host;
+            this.timeline = new Timeline(b.combatants);
+            this.timeline.Subscribe(this);
+            this.timeline.initialize();
         }
 
-        public ICombatant getEnemy()
+        public double get_turn_percentage()
         {
-            return timeline.getEnemy();
+            return timeline.get_turn_percentage();
         }
 
-        public void update_timeline()
+
+
+
+        public void OnNext(List<String> timeline)
         {
-            timeline.update();
+            host.update_timeline_list(timeline);
+            //this.timeline.Subscribe(this);
+        }
+
+        public void OnError(Exception error)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnCompleted()
+        {
+            
         }
     }
 }
