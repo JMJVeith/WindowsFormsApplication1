@@ -4,157 +4,92 @@ using System.Collections;
 using System.ComponentModel;
 using System.Threading;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace RealmWarsTestView
 {
-    partial class Form1 : Form
+    public partial class Form1 : Form
     {
-        private BattleArenaWrapper battle_wrapper;
-        private BackgroundWorker turn_progress_worker;
+        private BattleArena battle_arena;
         private TimelineWrapper timeline_wrapper;
 
+        public consoleWindow console { get; set; }
+        private timelineWindow timeline;
+        private combatantsWindow combatants;
 
-        public Form1()
+        private Reporter<Turn> reporter;
+
+        private turnBackgroundWorker turn_progress;
+
+        //model needs to own the interfaces, controller/view need to impliment them
+
+        public Form1(BattleArena battle)
         {
-            initializeBackgroundWorker();
-
             InitializeComponent();
-        }
 
-        private void initializeBackgroundWorker()
-        {
-            turn_progress_worker = new BackgroundWorker();
-            turn_progress_worker.DoWork += dowork_bar;
-            turn_progress_worker.ProgressChanged += updateBar;
-            turn_progress_worker.RunWorkerCompleted += updateBar;
-            turn_progress_worker.WorkerReportsProgress = true;
+            this.battle_arena = battle;
+
+            //initialize controller
+            //put everything in controller
+            
+            turn_progress = new turnBackgroundWorker(new BackgroundWorker(), new turnTimingBar(turn_timing_bar));
+
+            //pass in controller?
+            this.console = new consoleWindow(console_window);
+            this.timeline = new timelineWindow(timeline_window);
+            this.combatants = new combatantsWindow(combatant_window);
         }
 
         private void StartButton_Click(object sender, EventArgs e)
         {
+            console.clear();
+
+            //move everything to controller
+            //add reporters
+            //this.battle_arena = new BattleArena();
+            this.timeline_wrapper = new TimelineWrapper(this, battle_arena);
+
+
+            combatants.print(battle_arena.get_combatants());
+
             AttackButton.Enabled = true;
-            ConsoleWindow.Items.Clear();
-
-            this.battle_wrapper = new BattleArenaWrapper();
-            this.timeline_wrapper = new TimelineWrapper(this, battle_wrapper);
-
-            combatant_display.Items.Clear();
-
-            foreach (ICombatant combatant in battle_wrapper.combatants)
-            {
-                combatant_display.Items.Add(format_combatant(combatant));
-            }
-
-            display_combatants();
-            //update_timeline_list();
-        }
-
-        public void printStuff(string msg)
-        {
-            ConsoleWindow.Items.Insert(0,msg);
-        }
-
-        //public void update_timeline_list()
-        //{
-        //    timeline_list_box.Items.Clear();//n
-
-        //    foreach(String line in timeline_wrapper.timeline_list())
-        //    {
-        //        timeline_list_box.Items.Add(line);//n
-        //    }
-        //}
-
-        public void update_timeline_list(IEnumerable timeline_lines)
-        {
-            //timeline_list_box.Items.Clear();
-
-            foreach (String line in timeline_lines)
-            {
-                timeline_list_box.Items.Add(line);
-            }
-            timeline_list_box.Update();
+            add_combatant_btn.Enabled = true;
         }
 
         private void AttackButton_Click(object sender, EventArgs e)
         {
-            turn_progress_bar.Value = 0;
-            //update_timeline_list();
+            AttackButton.Enabled = false;
 
-            string msg = battle_wrapper.attack();
+            string msg = battle_arena.attack(battle_arena.timeline.get_enemy());
 
-            printStuff(msg);
-            //update_timeline_list();
-            display_combatants();
+            //skip print, let attack send the message
+            console.print(msg);
+            combatants.print(battle_arena.get_combatants());
 
-            //end player turn
-            //disable attack button
-            //start enemy turn
+            AttackButton.Enabled = timeline_wrapper.button();
 
-            if (!turn_progress_worker.IsBusy)
-            {
-                turn_progress_worker.RunWorkerAsync();
-            }
+            turn_progress.run();
         }
 
-        private void dowork_bar(object sender, DoWorkEventArgs e)
+        public void update_timeline_list()
         {
-            return;
-            while (timeline_wrapper.get_turn_percentage() < 100)
-            {
-                turn_progress_worker.ReportProgress((int)timeline_wrapper.get_turn_percentage());
-                Thread.Sleep(20);
-            }
-            return;
-        }
-
-        private void updateBar(object sender, ProgressChangedEventArgs e)
-        {
-            return;
-            int value = e.ProgressPercentage;
-            turn_progress_bar.Value = value;
-            if (e.ProgressPercentage >= 1)
-            {
-                turn_progress_bar.Value = value - 1;
-            }
-            turn_progress_bar.Value = value;
-            turn_progress_bar.Update();
-            //update_timeline_list();
-        }
-
-        private void updateBar(object sender, RunWorkerCompletedEventArgs e)
-        {
-            return;
-            turn_progress_bar.Update();
-        }
-
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            turn_progress_worker.Dispose();
+            timeline.print(battle_arena.timeline.turns);
         }
 
         private void add_combatant_btn_Click(object sender, EventArgs e)
         {
-            ICombatant new_combatant = battle_wrapper.add_combatant();
-            printStuff(new_combatant.name + " has joined the fight");
+            ICombatant new_combatant = new PCCombatant("Combatant", new Attributes(8, 12));
 
-            combatant_display.Items.Add(format_combatant(new_combatant));
+            battle_arena.add_combatant(new_combatant);
 
-            display_combatants();
+            console.print(new_combatant.name + " has joined the fight");
+
+            combatants.print(battle_arena.get_combatants());
         }
 
-        private string format_combatant(ICombatant combatant)
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            return combatant.name + " HP: " + combatant.get_health();
-        }
-
-        private void display_combatants()
-        {
-            int count = 0;
-            foreach (ICombatant combatant in battle_wrapper.combatants)
-            {
-                combatant_display.Items[count] = format_combatant(combatant);
-                count++;
-            }
+            turn_progress.dispose();
         }
     }
 }

@@ -26,22 +26,10 @@ namespace RealmWarsModel
             this.attack = new basicAttack(this, 1000);
         }
 
-        public Turn makeTurn()
+        public Turn make_turn()
         {
             return new PlayerTurn(this);
         }
-
-        public void start_turn() { }
-        public void stop_turn()
-        {
-            //Message timeline - end the turn
-            //  destroy this turn
-            //  create new turn
-            //  sort
-            //Message timeline to set next turn
-            //  
-        }
-        public void end_turn() { }
 
         public string activate(ICombatant enemy)
         {
@@ -53,8 +41,7 @@ namespace RealmWarsModel
 
         public double calc_turn_timing(double baseTime)
         {
-            double time = baseTime / (baseTime + (500 * Math.Pow(1.05, attributes.agigity)));
-            return time;
+            return baseTime / (baseTime + (500 * Math.Pow(1.05, attributes.agigity)));
         }
 
         public int get_health()

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace RealmWarsModel
 {
@@ -12,15 +8,26 @@ namespace RealmWarsModel
 
         public ICombatant owner { get; set; }
 
-        public int current_phase { get; set; }
+        internal int current_phase;
+
+        internal bool stopped = false;
 
         public double time_until_turn { get; internal set; }
 
-        public abstract Turn copy();
 
-        public abstract void startTurn();
 
-        public abstract void stop_turn_timers();
+        public void start_turn()
+        {
+            phases[current_phase].start_phase();
+        }
+
+        public void stop_turn_timers()
+        {
+            stopped = true;
+            dispose();
+        }
+
+        public abstract bool button();
 
         private double total_time()
         {
@@ -55,6 +62,19 @@ namespace RealmWarsModel
         public double get_turn_percentage()
         {
             return 100 * get_turn_time() / total_time();
+        }
+
+        public string to_string()
+        {
+            return $"{owner.name,-7}: {(int)(time_until_turn * 1000)}";
+        }
+
+        internal void dispose()
+        {
+            for (int i = 0; i < phases.Count - 1; i++)
+            {
+                phases[i].dispose();
+            }
         }
     }
 }

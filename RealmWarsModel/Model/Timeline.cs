@@ -1,13 +1,9 @@
 ﻿///Creates a Timeline for the Battle Arena Model
 ///Creates a List ordered based off of time until next turn
-///Functions:
-///     
+ 
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RealmWarsModel
 {
@@ -15,8 +11,9 @@ namespace RealmWarsModel
     {
         private List<ICombatant> combatants;
 
-        public IObserver<List<String>> observers;
-        private IDisposable unsubscriber;
+        public activePlayerTurn active_player_turn { get; set; }
+
+        public IObserver<List<String>> observer;
 
         public List<Turn> turns { get; set; }
 
@@ -29,14 +26,11 @@ namespace RealmWarsModel
             turns = new List<Turn>();
 
             fill();
+            //data clump
             sort();
-        }
-
-        public void initialize()
-        {
+            active_player_turn = new activePlayerTurn(turns[0]);
             set_next_turn();
-
-            update_turn_times();
+            update_times();
         }
 
         private void sort()
@@ -50,34 +44,25 @@ namespace RealmWarsModel
 
             foreach (ICombatant combatant in combatants)
             {
-                turns.Add(new PlayerTurn(combatant));
+                turns.Add(combatant.make_turn());//factory?
             }
         }
 
 
         internal void set_next_turn()
         {
-            next_turn_time = turns[0].time_until_turn;
+            next_turn_time = active_player_turn.time_until_turn;
         }
 
-        private void update_turn_times()
+        private void update_times()
         {
             for (int i = 0; i < turns.Count; i++)
             {
                 turns[i].time_until_turn -= next_turn_time;
-                //Console.WriteLine(turns[i].time_until_turn.ToString());//good
             }
-            notify_all();
-            //Console.WriteLine(turns[1].time_until_turn);
         }
 
-
-        public ICombatant getActivePlayer()
-        {
-            return turns[0].owner;
-        }
-
-        public ICombatant getEnemy()
+        public ICombatant get_enemy()
         {
             return turns[1].owner;
         }
@@ -85,40 +70,36 @@ namespace RealmWarsModel
 
         public void end_turn()
         {
-            turns[0].stop_turn_timers();//ends phase timers n' shit
+            active_player_turn.end_turn();
 
-            retime_active_player();
+            ////data clump
             sort();
-
+            //wat dis?get new active player
+            active_player_turn = new activePlayerTurn(turns[0]);
+            //update times
             set_next_turn();
-            update_turn_times();
+            update_times();
+
+            notify_timeline();
         }
 
         public void next_turn()
         {
             end_turn();
-            turns[0].startTurn();
+            active_player_turn.start_turn();
+            //get next turn, if player character, enable attack button
+            //button should enable/disable the button directly
+            active_player_turn.button();
         }
 
-        private void retime_active_player()
-        {
-            turns[0].time_until_turn = turns[0].owner.calc_turn_timing(500);
-        }
-
-        private List<String> print_timeline()
+        public List<String> print_timeline()
         {
             List<String> s = new List<String>();
             for (int i = 0; i < turns.Count; i++)
             {
-                //Console.WriteLine((int)(turns[i].time_until_turn * 1000));//solved, get this to the view
-                s.Add(((int)(turns[i].time_until_turn * 1000)).ToString());
+                s.Add(turns[i].to_string());
             }
             return s;
-        }
-
-        public double get_turn_percentage()
-        {
-            return turns[0].get_turn_percentage();
         }
 
 
@@ -127,16 +108,14 @@ namespace RealmWarsModel
 
         public IDisposable Subscribe(IObserver<List<String>> observer)
         {
-            observers = observer;
+            this.observer = observer;
 
-            return unsubscriber;
+            return null;
         }
 
-        private void notify_all()
+        private void notify_timeline()
         {
-            //Console.WriteLine(turns[1].time_until_turn);
-            observers.OnNext(print_timeline());
-            observers.OnCompleted();
+            observer.OnNext(print_timeline());
         }
     }
 }

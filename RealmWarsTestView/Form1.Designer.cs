@@ -32,107 +32,100 @@ namespace RealmWarsTestView
         private void InitializeComponent()
         {
             this.button1 = new System.Windows.Forms.Button();
-            this.ConsoleWindow = new System.Windows.Forms.ListBox();
+            this.console_window = new System.Windows.Forms.ListBox();
             this.AttackButton = new System.Windows.Forms.Button();
-            this.timeline_list_box = new System.Windows.Forms.ListBox();
-            this.turn_progress_bar = new System.Windows.Forms.ProgressBar();
+            this.timeline_window = new System.Windows.Forms.ListBox();
+            this.turn_timing_bar = new System.Windows.Forms.ProgressBar();
             this.add_combatant_btn = new System.Windows.Forms.Button();
-            this.combatant_display = new System.Windows.Forms.ListBox();
+            this.combatant_window = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(16, 15);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button1.Location = new System.Drawing.Point(12, 12);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(137, 28);
+            this.button1.Size = new System.Drawing.Size(103, 23);
             this.button1.TabIndex = 0;
             this.button1.Text = "Do the Thing";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.StartButton_Click);
             // 
-            // ConsoleWindow
+            // console_window
             // 
-            this.ConsoleWindow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.ConsoleWindow.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ConsoleWindow.ItemHeight = 25;
-            this.ConsoleWindow.Location = new System.Drawing.Point(16, 52);
-            this.ConsoleWindow.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.ConsoleWindow.MinimumSize = new System.Drawing.Size(265, 245);
-            this.ConsoleWindow.Name = "ConsoleWindow";
-            this.ConsoleWindow.Size = new System.Drawing.Size(431, 229);
-            this.ConsoleWindow.TabIndex = 1;
+            this.console_window.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.console_window.Font = new System.Drawing.Font("Courier New", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.console_window.ItemHeight = 18;
+            this.console_window.Location = new System.Drawing.Point(12, 42);
+            this.console_window.MinimumSize = new System.Drawing.Size(200, 200);
+            this.console_window.Name = "console_window";
+            this.console_window.Size = new System.Drawing.Size(324, 184);
+            this.console_window.TabIndex = 1;
             // 
             // AttackButton
             // 
             this.AttackButton.Enabled = false;
-            this.AttackButton.Location = new System.Drawing.Point(163, 15);
-            this.AttackButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.AttackButton.Location = new System.Drawing.Point(122, 12);
             this.AttackButton.Name = "AttackButton";
-            this.AttackButton.Size = new System.Drawing.Size(100, 28);
+            this.AttackButton.Size = new System.Drawing.Size(75, 23);
             this.AttackButton.TabIndex = 2;
             this.AttackButton.Text = "Attack";
             this.AttackButton.UseVisualStyleBackColor = true;
             this.AttackButton.Click += new System.EventHandler(this.AttackButton_Click);
             // 
-            // timeline_list_box
+            // timeline_window
             // 
-            this.timeline_list_box.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.timeline_list_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.timeline_list_box.ItemHeight = 25;
-            this.timeline_list_box.Location = new System.Drawing.Point(16, 286);
-            this.timeline_list_box.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.timeline_list_box.MinimumSize = new System.Drawing.Size(265, 245);
-            this.timeline_list_box.Name = "timeline_list_box";
-            this.timeline_list_box.Size = new System.Drawing.Size(431, 229);
-            this.timeline_list_box.TabIndex = 7;
+            this.timeline_window.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.timeline_window.Font = new System.Drawing.Font("Courier New", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.timeline_window.ItemHeight = 18;
+            this.timeline_window.Location = new System.Drawing.Point(12, 232);
+            this.timeline_window.MinimumSize = new System.Drawing.Size(200, 200);
+            this.timeline_window.Name = "timeline_window";
+            this.timeline_window.Size = new System.Drawing.Size(324, 184);
+            this.timeline_window.TabIndex = 7;
             // 
-            // turn_progress_bar
+            // turn_timing_bar
             // 
-            this.turn_progress_bar.Location = new System.Drawing.Point(272, 15);
-            this.turn_progress_bar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.turn_progress_bar.MarqueeAnimationSpeed = 0;
-            this.turn_progress_bar.Name = "turn_progress_bar";
-            this.turn_progress_bar.Size = new System.Drawing.Size(133, 28);
-            this.turn_progress_bar.TabIndex = 8;
+            this.turn_timing_bar.Location = new System.Drawing.Point(204, 12);
+            this.turn_timing_bar.MarqueeAnimationSpeed = 0;
+            this.turn_timing_bar.Name = "turn_timing_bar";
+            this.turn_timing_bar.Size = new System.Drawing.Size(100, 23);
+            this.turn_timing_bar.TabIndex = 8;
             // 
             // add_combatant_btn
             // 
             this.add_combatant_btn.AutoSize = true;
-            this.add_combatant_btn.Location = new System.Drawing.Point(809, 14);
-            this.add_combatant_btn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.add_combatant_btn.Enabled = false;
+            this.add_combatant_btn.Location = new System.Drawing.Point(607, 11);
             this.add_combatant_btn.Name = "add_combatant_btn";
-            this.add_combatant_btn.Size = new System.Drawing.Size(120, 28);
+            this.add_combatant_btn.Size = new System.Drawing.Size(90, 23);
             this.add_combatant_btn.TabIndex = 11;
             this.add_combatant_btn.Text = "Add Combatant";
             this.add_combatant_btn.UseVisualStyleBackColor = true;
             this.add_combatant_btn.Click += new System.EventHandler(this.add_combatant_btn_Click);
             // 
-            // combatant_display
+            // combatant_window
             // 
-            this.combatant_display.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.combatant_display.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.combatant_display.ItemHeight = 25;
-            this.combatant_display.Location = new System.Drawing.Point(456, 52);
-            this.combatant_display.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.combatant_display.MinimumSize = new System.Drawing.Size(265, 245);
-            this.combatant_display.Name = "combatant_display";
-            this.combatant_display.Size = new System.Drawing.Size(265, 229);
-            this.combatant_display.TabIndex = 12;
+            this.combatant_window.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.combatant_window.Font = new System.Drawing.Font("Courier New", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.combatant_window.ItemHeight = 18;
+            this.combatant_window.Location = new System.Drawing.Point(342, 42);
+            this.combatant_window.MinimumSize = new System.Drawing.Size(200, 200);
+            this.combatant_window.Name = "combatant_window";
+            this.combatant_window.Size = new System.Drawing.Size(200, 184);
+            this.combatant_window.TabIndex = 12;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1489, 667);
-            this.Controls.Add(this.combatant_display);
+            this.ClientSize = new System.Drawing.Size(1117, 542);
+            this.Controls.Add(this.combatant_window);
             this.Controls.Add(this.add_combatant_btn);
-            this.Controls.Add(this.turn_progress_bar);
-            this.Controls.Add(this.timeline_list_box);
+            this.Controls.Add(this.turn_timing_bar);
+            this.Controls.Add(this.timeline_window);
             this.Controls.Add(this.AttackButton);
-            this.Controls.Add(this.ConsoleWindow);
+            this.Controls.Add(this.console_window);
             this.Controls.Add(this.button1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "Form1";
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
@@ -144,12 +137,12 @@ namespace RealmWarsTestView
         #endregion
 
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ListBox ConsoleWindow;
+        private System.Windows.Forms.ListBox console_window;
         private System.Windows.Forms.Button AttackButton;
-        private System.Windows.Forms.ListBox timeline_list_box;
-        private System.Windows.Forms.ProgressBar turn_progress_bar;
+        private System.Windows.Forms.ListBox timeline_window;
+        private System.Windows.Forms.ProgressBar turn_timing_bar;
         private System.Windows.Forms.Button add_combatant_btn;
-        private System.Windows.Forms.ListBox combatant_display;
+        private System.Windows.Forms.ListBox combatant_window;
     }
 }
 

@@ -16,10 +16,6 @@ namespace RealmWarsModel
 {
     public class PlayerTurn : Turn
     {
-        //private readonly BattleArena battle;
-
-        //public double time_until_turn { get; set; }
-
         /// <summary>
         /// The phase where no penalty is applied to speed for acting slowly
         /// </summary>
@@ -31,97 +27,44 @@ namespace RealmWarsModel
         private Phase ActionPhase;
 
 
-        private bool timeOut = false;
-
-        private bool stopped = false;
-
-
-        public PlayerTurn(ICombatant owner)//, BattleArena battle)
+        public PlayerTurn(ICombatant owner)
         {
-            this.phases = new List<Phase>();
+            initialize_phases();
             this.owner = owner;
             time_until_turn = this.owner.calc_turn_timing(500);
+        }
 
+        private void initialize_phases()
+        {
+            this.phases = new List<Phase>();
             current_phase = 0;
-            timeOut = false;
 
             freePhase = new Phase(200, new EventHandler(next_phase));
-            ActionPhase = new Phase(1000, new EventHandler(next_phase));
+            ActionPhase = new Phase(1000, new EventHandler(end_turn));
 
             phases.Add(freePhase);
             phases.Add(ActionPhase);
-        }
-
-        public override Turn copy()
-        {
-            //this.phases = new List<Phase>();
-            //this.owner = owner;
-            time_until_turn = this.owner.calc_turn_timing(500);
-
-            current_phase = 0;
-            timeOut = false;
-
-            freePhase = new Phase(200, new EventHandler(next_phase));
-            ActionPhase = new Phase(1000, new EventHandler(next_phase));
-
-            phases.Clear();
-            phases.Add(freePhase);
-            phases.Add(ActionPhase);
-
-            //Console.WriteLine("" + time_until_turn);
-
-            return new PlayerTurn(this.owner);
-        }
-
-        override
-        public void startTurn()
-        {
-            phases[current_phase].start_phase();
-            //current_phase += 1;
-        }
-
-        override
-        public void stop_turn_timers()
-        {
-            stopped = true;
-            dispose();
         }
 
         private void next_phase(Object myObject, EventArgs eventArgs)
         {
             //.if the turn was stopped ahead of time
             if (stopped)
-            {
-                return;
-            }
-            //.if the turn ended
-            if (current_phase >= phases.Count - 1)//timeOut)
-            {
-                end_turn();
-                return;
-            }
+            {return;}
 
-            ///Starts the timer for the next phase
+            //Starts the timer for the next phase
             current_phase += 1;
             phases[current_phase].start_phase();
-
         }
 
-        private void end_turn()
+        private void end_turn(Object myObject, EventArgs eventArgs)
         {
-            if (timeOut)
-            {
-                //battle.printStuff("Too Slow: ");// + get_turn_time());
-            }
             dispose();
         }
 
-        private void dispose()
+        public override bool button()
         {
-            for(int i = 0; i<phases.Count-1; i++)
-            {
-                phases[i].dispose();
-            }
+            return true;
         }
     }
 }

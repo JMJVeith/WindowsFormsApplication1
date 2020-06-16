@@ -1,37 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using RealmWarsModel;
 
 namespace RealmWarsTestView
 {
-    class TimelineWrapper : IObserver<List<String>>
+    public class TimelineWrapper : IObserver<List<String>>
     {
-        public Timeline timeline { get; }
+        private BattleArena battle;
         private Form1 host;
 
-        public TimelineWrapper(Form1 host, BattleArenaWrapper b)
+        public TimelineWrapper(Form1 host, BattleArena battle)
         {
             this.host = host;
-            this.timeline = new Timeline(b.combatants);
-            this.timeline.Subscribe(this);
-            this.timeline.initialize();
+            this.battle = battle;
+            get_timeline().Subscribe(this);
         }
 
-        public double get_turn_percentage()
+        public bool button()
         {
-            return timeline.get_turn_percentage();
+            return battle.timeline.active_player_turn.button();
         }
+
+        public Timeline get_timeline()
+        {
+            return battle.timeline;
+        }
+
+
+
 
 
 
 
         public void OnNext(List<String> timeline)
         {
-            host.update_timeline_list(timeline);
-            //this.timeline.Subscribe(this);
+            host.update_timeline_list();
         }
 
         public void OnError(Exception error)
@@ -41,7 +44,7 @@ namespace RealmWarsTestView
 
         public void OnCompleted()
         {
-            
+            return;
         }
     }
 }

@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{64730AF7-6438-4204-9AF9-1543F55C9429}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RealmWarsController</RootNamespace>
     <AssemblyName>RealmWarsController</AssemblyName>
@@ -30,9 +30,14 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,10 +46,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="idontknowyet.cs" />
+    <Compile Include="Controllers\attackController.cs" />
+    <Compile Include="Controllers\battleController.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Reporters\consoleReporter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reporters\timelineReporter.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RealmWarsModelTest\RealmWarsModelTest.csproj">
+      <Project>{ed33d772-b599-4da2-b280-523680f5d6a2}</Project>
+      <Name>RealmWarsModelTest</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RealmWarsModel\RealmWarsModel.csproj">
       <Project>{abf1b56e-3bec-40ba-a482-8ba5bb71840e}</Project>
       <Name>RealmWarsModel</Name>

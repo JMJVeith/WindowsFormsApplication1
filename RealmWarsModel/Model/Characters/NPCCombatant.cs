@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RealmWarsModel
 {
-    class EnemyAICombatant : ICombatant
+    class NPCCombatant : ICombatant
     {
         public String name { get; }
 
@@ -14,42 +14,40 @@ namespace RealmWarsModel
 
         public Attributes attributes { get; }
 
-        public EnemyAICombatant(PlayerCharacter owner)
+        private Reporter<string> reporter;
+
+        public NPCCombatant(PlayerCharacter owner)
         {
             this.name = owner.name;
+            this.reporter = reporter;
             this.attributes = owner.attributes;
             this.attack = new basicAttack(this, 1000);
         }
 
-        public Turn makeTurn()
+        public NPCCombatant(string name, Attributes attributes)
         {
-            return new EnemyAITurn(this);
+            this.name = name;
+            this.attributes = attributes;
+            this.attack = new basicAttack(this, 1000);
         }
 
-        public void start_turn()
+        public Turn make_turn()
         {
-            run_turn();
-        }
-
-        private void run_turn()
-        {
-            //wait ?0.4? seconds
-            //activate ability
-
-            //enable attack button
-            //end turn
-            //activate(battle.get_combatants()[1]);
+            return new NPCTurn(this, reporter);
         }
 
         public string activate(ICombatant target)
         {
+            //start turn
+            //end turn
             return attack.activate(target);
+            //report damage
+            //remove damage report from battle arena
         }
 
         public double calc_turn_timing(double baseTime)
         {
-            double time = baseTime / (baseTime + (500 * Math.Pow(1.05, attributes.agigity)));
-            return time;
+            return baseTime / (baseTime + (500 * Math.Pow(1.05, attributes.agigity)));
         }
 
         public int get_health()

@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Diagnostics;
 
 namespace RealmWarsModel
 {
@@ -12,21 +6,13 @@ namespace RealmWarsModel
     {
         private PhaseTime timeHandler { get; }
 
-
-
-        /// <summary>
-        /// Constructs an instance of a phase
-        /// </summary>
-        /// <param name="interval">Duration of the phase in ms</param>
-        public Phase(int interval)
-        {
-            this.timeHandler = new PhaseTime(interval);
-        }
-
+        ///<summary>q</summary>
+        /// <param name="interval">Sets the irl turn timespan to this value</param>
+        /// <param name="end_of_phase_action"></param>
         public Phase(int interval, EventHandler end_of_phase_action)
         {
             this.timeHandler = new PhaseTime(interval);
-            timeHandler.timer.Tick += end_of_phase_action;
+            add_end_event(end_of_phase_action);
         }
 
 
@@ -35,9 +21,6 @@ namespace RealmWarsModel
             timeHandler.start();
         }
 
-        /// <summary>
-        /// Releases the held resources for Garbage Collection (I think)
-        /// </summary>
         public void dispose()
         {
             timeHandler.dispose();
@@ -67,6 +50,6 @@ namespace RealmWarsModel
     {
         public int interval;
 
-        //private EventHandler end_of_turn_action;
+        //private EventHandler end_of_phase_action;
     }
 }

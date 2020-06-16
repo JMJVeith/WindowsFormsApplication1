@@ -4,8 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using RealmWarsModelTest;
+using RealmWarsTestView;
 
-namespace RealmWarsTestView
+namespace RealmWarsController
 {
     static class Program
     {
@@ -17,10 +18,17 @@ namespace RealmWarsTestView
         {
             TestAll turnTester = new TestAll();
             turnTester.run_tests();
-            
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Form1(new RealmWarsModel.BattleArena()));
+            battleController battle = new battleController();
+        }
+
+        public static void create_form(Form1 form)
+        {
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(form);
         }
     }
 }

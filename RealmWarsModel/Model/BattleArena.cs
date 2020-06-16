@@ -1,8 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 
 
 namespace RealmWarsModel
@@ -12,13 +8,12 @@ namespace RealmWarsModel
         public delegate void EventHandler();
 
 
-
         public BattleArena()
         {
             Combatants = new List<ICombatant>();
 
             Combatants.Add(new PCCombatant(new PlayerCharacter("James")));
-            Combatants.Add(new EnemyAICombatant(new PlayerCharacter("Orc")));
+            Combatants.Add(new NPCCombatant(new PlayerCharacter("Orc")));
 
             timeline = new Timeline(Combatants);
         }
@@ -33,12 +28,11 @@ namespace RealmWarsModel
 
         public string attack(ICombatant enemy)
         {
-            //perform action
-            string r_msg = timeline.getActivePlayer().activate(enemy);//only deals damage
+            //this should not exist
 
-            //updates the timeline values
-            //timeline.update();
-            //starts the next turn
+            //attack
+            string r_msg = timeline.active_player_turn.activate(enemy);
+
             timeline.next_turn();
 
             return r_msg;
@@ -51,8 +45,12 @@ namespace RealmWarsModel
 
         public List<ICombatant> get_combatants()
         {
-
             return Combatants;
+        }
+
+        public ICombatant get_enemy()
+        {
+            return timeline.get_enemy();
         }
     }
 }

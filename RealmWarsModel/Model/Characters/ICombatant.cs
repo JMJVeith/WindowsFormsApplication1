@@ -14,14 +14,12 @@ namespace RealmWarsModel
 
         Attributes attributes { get; }
 
-        void start_turn();
-
         string activate(ICombatant target);
 
-        double calc_turn_timing(double baseTime);
+        Turn make_turn();
+
+        double calc_turn_timing(double baseTime);//move to turn?
 
         int get_health();
-
-        Turn makeTurn();
     }
 }
