@@ -42,9 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\mvc\Controller.cs" />
-    <Compile Include="Model\mvc\Reporter.cs" />
-    <Compile Include="Model\Turn\activePlayerTurn.cs" />
+    <Compile Include="Model\Turn\activeCharacterTurn.cs" />
     <Compile Include="Model\Characters\CharacterBuilding\Attributes.cs" />
     <Compile Include="Model\Characters\CharacterBuilding\Abilities\basicAttack.cs" />
     <Compile Include="Model\BattleArena.cs" />
@@ -54,16 +52,21 @@
     <Compile Include="Model\Characters\ICombatant.cs" />
     <Compile Include="Model\Characters\PCCombatant.cs" />
     <Compile Include="Model\Characters\PlayerCharacter.cs" />
-    <Compile Include="Model\Timeline.cs" />
+    <Compile Include="Model\TurnManager.cs" />
     <Compile Include="Model\Turn\NPCTurn.cs" />
     <Compile Include="Model\Turn\Phase.cs" />
     <Compile Include="Model\Turn\PhaseTime.cs" />
     <Compile Include="Model\Turn\PlayerTurn.cs" />
     <Compile Include="Model\Turn\StopwatchSingleton.cs" />
+    <Compile Include="Model\Turn\Timeline.cs" />
     <Compile Include="Model\Turn\Turn.cs" />
-    <Compile Include="Model\mvc\View.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\View\View.csproj">
+      <Project>{eda06e04-4c6f-47de-b1fb-cae3bc538d6d}</Project>
+      <Name>View</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

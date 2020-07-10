@@ -1,56 +1,43 @@
 ﻿using RealmWarsModel;
 using System;
-using System.Collections;
 using System.ComponentModel;
-using System.Threading;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using View;
 
 namespace RealmWarsTestView
 {
-    public partial class Form1 : Form
+    public partial class TestView : Form
     {
-        private BattleArena battle_arena;
-        private TimelineWrapper timeline_wrapper;
+        private BattleArena battle;
 
-        public consoleWindow console { get; set; }
+        private consoleWindow console;
         private timelineWindow timeline;
         private combatantsWindow combatants;
-
-        private Reporter<Turn> reporter;
+        private AttackButton attack_button;
 
         private turnBackgroundWorker turn_progress;
 
-        //model needs to own the interfaces, controller/view need to impliment them
-
-        public Form1(BattleArena battle)
+        public TestView(BattleArena battle)
         {
             InitializeComponent();
 
-            this.battle_arena = battle;
-
-            //initialize controller
-            //put everything in controller
+            this.battle = battle;
             
             turn_progress = new turnBackgroundWorker(new BackgroundWorker(), new turnTimingBar(turn_timing_bar));
-
-            //pass in controller?
             this.console = new consoleWindow(console_window);
             this.timeline = new timelineWindow(timeline_window);
             this.combatants = new combatantsWindow(combatant_window);
+            this.attack_button = new AttackButton(AttackButton);
         }
 
         private void StartButton_Click(object sender, EventArgs e)
         {
-            console.clear();
+            ConsoleEntity.clear();
+            ConsoleEntity.print("Start battle!");
 
-            //move everything to controller
-            //add reporters
-            //this.battle_arena = new BattleArena();
-            this.timeline_wrapper = new TimelineWrapper(this, battle_arena);
-
-
-            combatants.print(battle_arena.get_combatants());
+            update_combatants();
+            update_timeline();
 
             AttackButton.Enabled = true;
             add_combatant_btn.Enabled = true;
@@ -58,33 +45,45 @@ namespace RealmWarsTestView
 
         private void AttackButton_Click(object sender, EventArgs e)
         {
-            AttackButton.Enabled = false;
+            battle.attack(battle.get_enemy());
 
-            string msg = battle_arena.attack(battle_arena.timeline.get_enemy());
-
-            //skip print, let attack send the message
-            console.print(msg);
-            combatants.print(battle_arena.get_combatants());
-
-            AttackButton.Enabled = timeline_wrapper.button();
+            update_combatants();
 
             turn_progress.run();
         }
 
-        public void update_timeline_list()
-        {
-            timeline.print(battle_arena.timeline.turns);
-        }
-
         private void add_combatant_btn_Click(object sender, EventArgs e)
         {
-            ICombatant new_combatant = new PCCombatant("Combatant", new Attributes(8, 12));
+            ICombatant new_combatant = new NPCCombatant("Combatant", new Attributes(8, 12));
 
-            battle_arena.add_combatant(new_combatant);
+            battle.add_combatant(new_combatant);
 
-            console.print(new_combatant.name + " has joined the fight");
+            ConsoleEntity.print(new_combatant.name + " has joined the fight!");
+            update_combatants();
+            update_timeline();
+        }
 
-            combatants.print(battle_arena.get_combatants());
+        public void update_timeline()
+        {
+            timelineEntity.update(get_turns());
+        }
+
+        public void update_combatants()
+        {
+            combatantsEntity.update(new List<string>(get_combatants()));
+        }
+
+        public List<string> get_turns()
+        {
+            return battle.turn_manager.timeline.print_timeline();
+        }
+
+        private IEnumerable<string> get_combatants()
+        {
+            foreach (ICombatant combatant in battle.get_combatants())
+            {
+                yield return combatant.display();
+            }
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)

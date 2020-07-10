@@ -1,26 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using View;
 
 namespace RealmWarsModel
 {
-    // 0 = Normal
-    // 1 = Instant/Interupt
-    // 2 = Charge
-    // 3 = Channel
-    // To be replaced with inheritance
-
     class basicAttack : IAbility
     {
         public readonly String name;
 
         private readonly ICombatant user;
 
-        //private int responseTime;
-
-        //base time cost in ms
         public int timeCost { get; }
 
         private static readonly Random rnd = new Random();
@@ -32,15 +20,13 @@ namespace RealmWarsModel
             this.name = "attack";
         }
 
-        public string activate(ICombatant target)
+        public void activate(ICombatant target)
         {
             int damage = handle_damage(target);
 
-            string msg = generateAbilityLog(target, damage);
+            generateAbilityLog(target, damage);
 
             target.attributes.Health[0] -= damage;
-
-            return msg;
         }
 
         private int handle_damage(ICombatant target)
@@ -70,6 +56,7 @@ namespace RealmWarsModel
         private string generateAbilityLog(ICombatant target, int damage)
         {
             string log = user.name + " attacks " + target.name + " for " + damage + " damage";
+            ConsoleEntity.print(user.name + " attacks " + target.name + " for " + damage + " damage");
             return log;
         }
 

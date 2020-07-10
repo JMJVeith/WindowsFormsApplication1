@@ -6,9 +6,6 @@ namespace RealmWarsModel
     {
         private PhaseTime timeHandler { get; }
 
-        ///<summary>q</summary>
-        /// <param name="interval">Sets the irl turn timespan to this value</param>
-        /// <param name="end_of_phase_action"></param>
         public Phase(int interval, EventHandler end_of_phase_action)
         {
             this.timeHandler = new PhaseTime(interval);
@@ -26,13 +23,9 @@ namespace RealmWarsModel
             timeHandler.dispose();
         }
 
-        /// <summary>
-        /// Gets the elapsed time
-        /// </summary>
-        /// <returns>The total elapsed time as recorded by the stopwatch</returns>
         public int getWatchTime()
         {
-            return (int)timeHandler.watch.getWatchTime();
+            return timeHandler.get_watch_time();
         }
 
         public int getInterval()
@@ -44,12 +37,5 @@ namespace RealmWarsModel
         {
             timeHandler.timer.Tick += q;
         }
-    }
-
-    public class Phase2
-    {
-        public int interval;
-
-        //private EventHandler end_of_phase_action;
     }
 }

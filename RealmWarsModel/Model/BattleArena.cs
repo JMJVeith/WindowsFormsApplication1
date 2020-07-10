@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 
-
 namespace RealmWarsModel
 {
     public class BattleArena
     {
-        public delegate void EventHandler();
+        public TurnManager turn_manager { get; set; }
 
+        private List<ICombatant> Combatants;
 
         public BattleArena()
         {
@@ -14,33 +14,22 @@ namespace RealmWarsModel
 
             Combatants.Add(new PCCombatant(new PlayerCharacter("James")));
             Combatants.Add(new NPCCombatant(new PlayerCharacter("Orc")));
+            Combatants.Add(new NPCCombatant(new PlayerCharacter("Orc")));
 
-            timeline = new Timeline(Combatants);
+            turn_manager = new TurnManager(Combatants);
         }
 
-
-
-        public Timeline timeline { get; set; }
-
-        private List<ICombatant> Combatants;
-
-
-
-        public string attack(ICombatant enemy)
+        public void attack(ICombatant enemy)
         {
-            //this should not exist
+            turn_manager.active_player_turn.activate(enemy);
 
-            //attack
-            string r_msg = timeline.active_player_turn.activate(enemy);
-
-            timeline.next_turn();
-
-            return r_msg;
+            turn_manager.next_turn();
         }
 
         public void add_combatant(ICombatant combatant)
         {
             Combatants.Add(combatant);
+            turn_manager.timeline.fill();
         }
 
         public List<ICombatant> get_combatants()
@@ -50,7 +39,7 @@ namespace RealmWarsModel
 
         public ICombatant get_enemy()
         {
-            return timeline.get_enemy();
+            return turn_manager.timeline.get_enemy();
         }
     }
 }

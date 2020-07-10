@@ -1,22 +1,16 @@
-﻿
+﻿using View;
 
 namespace RealmWarsModel
 {
-    public class activePlayerTurn : Turn
+    public class activeCharacterTurn : Turn
     {
         private Turn turn;
 
-        /// <summary>
-        /// Wraps the real turn
-        /// </summary>
-        /// <param name="turn">The real turn that this is representing</param>
-        public activePlayerTurn(Turn turn)
+        public activeCharacterTurn(Turn turn) : base()
         {
             this.turn = turn;
             this.time_until_turn = turn.time_until_turn;
             this.owner = turn.owner;
-            //this.phases = turn.phases;
-            //this.current_phase = turn.current_phase;
         }
 
         private void retime()
@@ -26,12 +20,14 @@ namespace RealmWarsModel
 
         public override bool button()
         {
+            attackButtonEntity.button(turn.button());
             return turn.button();
         }
 
         public new void start_turn()
         {
             turn.start_turn();
+            button();
         }
 
         public void end_turn()
@@ -45,15 +41,9 @@ namespace RealmWarsModel
             turn.stop_turn_timers();
         }
 
-        public new double get_turn_percentage()
+        public void activate(ICombatant enemy)
         {
-            return turn.get_turn_percentage();
-        }
-
-        public string activate(ICombatant enemy)
-        {
-
-            return turn.owner.activate(enemy);
+            turn.owner.activate(enemy);
         }
     }
 }

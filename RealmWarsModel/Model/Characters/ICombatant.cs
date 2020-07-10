@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RealmWarsModel
 {
@@ -14,12 +10,14 @@ namespace RealmWarsModel
 
         Attributes attributes { get; }
 
-        string activate(ICombatant target);
+        void activate(ICombatant target);
 
-        Turn make_turn();
+        Turn make_turn(TurnManager timeline);
 
-        double calc_turn_timing(double baseTime);//move to turn?
+        double calc_turn_timing(double baseTime);
 
         int get_health();
+
+        string display();
     }
 }

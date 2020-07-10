@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using RealmWarsModel;
 using RealmWarsModelTest;
 using RealmWarsTestView;
 
@@ -21,14 +19,11 @@ namespace RealmWarsController
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            battleController battle = new battleController();
-        }
 
-        public static void create_form(Form1 form)
-        {
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(form);
+            BattleArena battle = new BattleArena();
+            TestView view = new TestView(battle);
+
+            Application.Run(view);
         }
     }
 }

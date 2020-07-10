@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace RealmWarsModel
 {
@@ -12,7 +7,7 @@ namespace RealmWarsModel
     /// </summary>
     class StopwatchSingleton
     {
-        private static StopwatchSingleton watch1;
+        private static StopwatchSingleton watch_entity;
 
         private Stopwatch watch;
 
@@ -20,39 +15,30 @@ namespace RealmWarsModel
 
         public static StopwatchSingleton initialize()
         {
-            if(watch1 == null)
+            if(watch_entity == null)
             {
-                watch1 = new StopwatchSingleton();
-                watch1.watch = new Stopwatch();
+                watch_entity = new StopwatchSingleton();
+                watch_entity.watch = new Stopwatch();
             }
-            return watch1;
+            return watch_entity;
         }
 
-        /// <summary>
-        /// Implements the Stopwatch  Start method
-        /// </summary>
-        public void Start()
+        public void start()
         {
             watch.Start();
         }
 
-        /// <summary>
-        /// Implements the Stopwatch  Reset method
-        /// </summary>
-        public void Reset()
+        public void reset()
         {
             watch.Reset();
         }
 
-        /// <summary>
-        /// Implements the Stopwatch  Stop method
-        /// </summary>
-        public void Stop()
+        public void stop()
         {
             watch.Stop();
         }
 
-        public int getWatchTime()
+        public int get_watch_time()
         {
             return (int)watch.Elapsed.TotalMilliseconds;
         }

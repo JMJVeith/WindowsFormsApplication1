@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RealmWarsModel
 {
-    class NPCCombatant : ICombatant
+    public class NPCCombatant : ICombatant
     {
         public String name { get; }
 
@@ -14,12 +10,9 @@ namespace RealmWarsModel
 
         public Attributes attributes { get; }
 
-        private Reporter<string> reporter;
-
         public NPCCombatant(PlayerCharacter owner)
         {
             this.name = owner.name;
-            this.reporter = reporter;
             this.attributes = owner.attributes;
             this.attack = new basicAttack(this, 1000);
         }
@@ -31,18 +24,14 @@ namespace RealmWarsModel
             this.attack = new basicAttack(this, 1000);
         }
 
-        public Turn make_turn()
+        public Turn make_turn(TurnManager timeline)
         {
-            return new NPCTurn(this, reporter);
+            return new NPCTurn(this, timeline);
         }
 
-        public string activate(ICombatant target)
+        public void activate(ICombatant target)
         {
-            //start turn
-            //end turn
-            return attack.activate(target);
-            //report damage
-            //remove damage report from battle arena
+            attack.activate(target);
         }
 
         public double calc_turn_timing(double baseTime)
@@ -53,6 +42,11 @@ namespace RealmWarsModel
         public int get_health()
         {
             return attributes.Health[0];
+        }
+
+        public string display()
+        {
+            return $"{name,-7} HP: {get_health()}";
         }
     }
 }

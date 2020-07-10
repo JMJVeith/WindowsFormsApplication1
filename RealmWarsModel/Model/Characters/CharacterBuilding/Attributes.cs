@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RealmWarsModel
 {
@@ -81,6 +77,20 @@ namespace RealmWarsModel
             this.wisdom = rnd.Next(lowest, highest);
             this.charisma = rnd.Next(lowest, highest);
             this.willpower = rnd.Next(lowest, highest);
+
+            calcSecondaryStats();
+        }
+
+        public Attributes(int strength, int dexterity, int agigity, int constitution, int intelligence, int wisdom, int charisma, int willpower)
+        {
+            this.strength = strength;
+            this.dexterity = dexterity;
+            this.agigity = agigity;
+            this.constitution = constitution;
+            this.intelligence = intelligence;
+            this.wisdom = wisdom;
+            this.charisma = charisma;
+            this.willpower = willpower;
 
             calcSecondaryStats();
         }

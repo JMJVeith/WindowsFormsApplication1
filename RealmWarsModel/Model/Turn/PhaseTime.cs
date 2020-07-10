@@ -1,67 +1,44 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Diagnostics;
 
 namespace RealmWarsModel
 {
     class PhaseTime
     {
-        /// <summary>
-        /// Sets the end point for the phase
-        /// </summary>
         public Timer timer { get; }
 
-        /// <summary>
-        /// Counts the amount of time that has passed in a phase
-        /// </summary>
-        public StopwatchSingleton watch { get; }
+        private StopwatchSingleton watch { get; }
 
-        /// <summary>
-        /// Creates a timer and a stopwatch and attaches an End method to the timer
-        /// </summary>
-        /// <param name="interval">The duration of the phase in ms</param>
         public PhaseTime(int interval)
         {
             this.timer = new Timer();
             this.timer.Interval = interval;
-            this.timer.Tick += new EventHandler(End);
+            this.timer.Tick += new EventHandler(on_end);
             this.watch = StopwatchSingleton.initialize();
         }
 
-        /// <summary>
-        /// Starts the stopwatch and timer
-        /// </summary>
         public void start()
         {
-            watch.Start();
+            watch.start();
             timer.Start();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="myObject"></param>
-        /// <param name="eventArgs"></param>
-        private void End(Object myObject, EventArgs eventArgs)
+        private void on_end(Object myObject, EventArgs eventArgs)
         {
             timer.Stop();
-            watch.Reset();
+            watch.reset();
         }
 
         public void dispose()
         {
             timer.Stop();
             timer.Dispose();
-            watch.Stop();
+            watch.stop();
         }
 
-        public int getWatchTime()
+        public int get_watch_time()
         {
-            return (int)watch.getWatchTime();
+            return (int)watch.get_watch_time();
         }
     }
 }

@@ -14,6 +14,19 @@ namespace RealmWarsModel
 
         public double time_until_turn { get; internal set; }
 
+        internal TurnManager timeline;
+
+        public Turn() { }
+
+        public Turn(ICombatant owner, TurnManager timeline)
+        {
+            this.owner = owner;
+            this.timeline = timeline;
+
+            this.phases = new List<Phase>();
+            current_phase = 0;
+        }
+
 
 
         public void start_turn()
