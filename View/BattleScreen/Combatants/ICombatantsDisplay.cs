@@ -2,7 +2,7 @@
 
 namespace View
 {
-    public interface ICombatants
+    public interface ICombatantsDisplay
     {
         void update(List<string> combatants);
     }

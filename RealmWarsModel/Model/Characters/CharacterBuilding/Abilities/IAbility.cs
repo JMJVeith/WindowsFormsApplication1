@@ -4,6 +4,6 @@
     {
         int timeCost { get; }
 
-        void activate(ICombatant target);
+        string activate(ICombatant target);
     }
 }

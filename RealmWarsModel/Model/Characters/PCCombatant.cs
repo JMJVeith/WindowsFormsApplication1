@@ -22,14 +22,14 @@ namespace RealmWarsModel
             this.attack = new basicAttack(this, 1000);
         }
 
-        public Turn make_turn(TurnManager timeline)
+        public Turn make_turn()
         {
-            return new PlayerTurn(this, timeline);
+            return new PlayerTurn(this);
         }
 
-        public void activate(ICombatant enemy)
+        public string activate(ICombatant enemy)
         {
-            attack.activate(enemy);
+            return attack.activate(enemy);
         }
 
         public double calc_turn_timing(double baseTime)

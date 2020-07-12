@@ -1,6 +1,4 @@
-﻿using View;
-
-namespace RealmWarsModel
+﻿namespace RealmWarsModel
 {
     public class activeCharacterTurn : Turn
     {
@@ -20,7 +18,6 @@ namespace RealmWarsModel
 
         public override bool button()
         {
-            attackButtonEntity.button(turn.button());
             return turn.button();
         }
 
@@ -41,9 +38,9 @@ namespace RealmWarsModel
             turn.stop_turn_timers();
         }
 
-        public void activate(ICombatant enemy)
+        public string activate(ICombatant enemy)
         {
-            turn.owner.activate(enemy);
+            return turn.owner.activate(enemy);
         }
     }
 }

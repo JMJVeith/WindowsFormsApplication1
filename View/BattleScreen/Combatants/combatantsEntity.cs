@@ -5,14 +5,14 @@ namespace View
     public class combatantsEntity
     {
         private static combatantsEntity combatants_entity;
-        private static ICombatants combatants;
+        private static ICombatantsDisplay combatants;
 
-        private combatantsEntity(ICombatants new_combatants)
+        private combatantsEntity(ICombatantsDisplay new_combatants)
         {
             combatants = new_combatants;
         }
 
-        public static combatantsEntity initialize(ICombatants new_combatants)
+        public static combatantsEntity initialize(ICombatantsDisplay new_combatants)
         {
             if (combatants == null)
             {

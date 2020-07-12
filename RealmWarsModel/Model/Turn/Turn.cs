@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace RealmWarsModel
 {
-    public abstract class Turn
+    public abstract class Turn : IObservable<string>
     {
+        private List<IObserver<string>> observers;
+
         public List<Phase> phases { get; set; }
 
         public ICombatant owner { get; set; }
@@ -14,14 +17,12 @@ namespace RealmWarsModel
 
         public double time_until_turn { get; internal set; }
 
-        internal TurnManager timeline;
-
         public Turn() { }
 
-        public Turn(ICombatant owner, TurnManager timeline)
+        public Turn(ICombatant owner)
         {
+            this.observers = new List<IObserver<string>>();
             this.owner = owner;
-            this.timeline = timeline;
 
             this.phases = new List<Phase>();
             current_phase = 0;
@@ -88,6 +89,22 @@ namespace RealmWarsModel
             {
                 phases[i].dispose();
             }
+        }
+
+        internal void notify(string msg)
+        {
+            foreach (IObserver<string> observer in observers)
+            {
+                observer.OnNext(msg);
+            }
+        }
+
+        public IDisposable Subscribe(IObserver<string> observer)
+        {
+            if (this.observers.Contains(observer))
+                return null;
+            this.observers.Add(observer);
+            return null;
         }
     }
 }

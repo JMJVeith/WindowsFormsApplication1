@@ -13,11 +13,8 @@ namespace RealmWarsModel
 
         public double next_turn_time { get; set; }
 
-        private TurnManager manager;
-
-        public Timeline(List<ICombatant> combatants, TurnManager manager)
+        public Timeline(List<ICombatant> combatants)
         {
-            this.manager = manager;
             this.combatants = combatants;
             timeline = new List<Turn>();
             fill();
@@ -38,7 +35,7 @@ namespace RealmWarsModel
 
             foreach (ICombatant combatant in combatants)
             {
-                timeline.Add(manager.make_turn(combatant));
+                timeline.Add(combatant.make_turn());
             }
 
             sort();
@@ -80,7 +77,7 @@ namespace RealmWarsModel
         public void add(ICombatant combatant)
         {
             combatants.Add(combatant);
-            //timeline.Add(manager.make_turn(combatant));
+            timeline.Add(combatant.make_turn());
             fill();
         }
     }

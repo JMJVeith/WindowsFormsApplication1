@@ -19,6 +19,7 @@
 
         public static void print(string msg)
         {
+            if (console == null) return;
             console.print(msg);
         }
 

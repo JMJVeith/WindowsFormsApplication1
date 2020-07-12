@@ -10,9 +10,9 @@ namespace RealmWarsModel
 
         Attributes attributes { get; }
 
-        void activate(ICombatant target);
+        string activate(ICombatant target);
 
-        Turn make_turn(TurnManager timeline);
+        Turn make_turn();
 
         double calc_turn_timing(double baseTime);
 

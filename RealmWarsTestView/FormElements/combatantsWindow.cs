@@ -4,7 +4,7 @@ using View;
 
 namespace RealmWarsTestView
 {
-    class combatantsWindow : ICombatants
+    class combatantsWindow : ICombatantsDisplay
     {
         ListBox combatant_display;
 

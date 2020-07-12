@@ -2,9 +2,9 @@
 using System.Windows.Forms;
 using RealmWarsModel;
 using RealmWarsModelTest;
-using RealmWarsTestView;
+using RealmWarsController;
 
-namespace RealmWarsController
+namespace RealmWarsTestView
 {
     static class Program
     {
@@ -21,7 +21,8 @@ namespace RealmWarsController
             Application.SetCompatibleTextRenderingDefault(false);
 
             BattleArena battle = new BattleArena();
-            TestView view = new TestView(battle);
+            battleController controller = new battleController(battle);//, view);
+            TestView view = new TestView(controller);//, battle);
 
             Application.Run(view);
         }

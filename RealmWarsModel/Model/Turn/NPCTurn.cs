@@ -1,5 +1,4 @@
 ﻿using System;
-using View;
 
 namespace RealmWarsModel
 {
@@ -7,7 +6,7 @@ namespace RealmWarsModel
     {
         private Phase action_phase;
 
-        public NPCTurn(ICombatant owner, TurnManager timeline) : base(owner, timeline)
+        public NPCTurn(ICombatant owner) : base(owner)
         {
             time_until_turn = this.owner.calc_turn_timing(500);
 
@@ -18,14 +17,13 @@ namespace RealmWarsModel
 
         public override bool button()
         {
-            attackButtonEntity.button(false);
             return false;
         }
 
         private void action(Object myObject, EventArgs eventArgs)//runs after .4 seconds
         {
-            owner.attack.activate(owner);//attacks self temporarly
-            timeline.next_turn();
+            string msg = owner.attack.activate(owner);//attacks self temporarly
+            notify(msg);
         }
     }
 }

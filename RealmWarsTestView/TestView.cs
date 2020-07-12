@@ -3,26 +3,27 @@ using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using RealmWarsController;
 using View;
 
 namespace RealmWarsTestView
 {
-    public partial class TestView : Form
+    public partial class TestView : Form, IBattleScreen
     {
-        private BattleArena battle;
+        private battleController controller;
 
-        private consoleWindow console;
-        private timelineWindow timeline;
-        private combatantsWindow combatants;
-        private AttackButton attack_button;
+        public IConsole console { get; set; }
+        public ITimeline timeline { get; set; }
+        public ICombatantsDisplay combatants { get; set; }
+        public IAttackButton attack_button { get; set; }
 
         private turnBackgroundWorker turn_progress;
 
-        public TestView(BattleArena battle)
+        public TestView(battleController controller)
         {
             InitializeComponent();
 
-            this.battle = battle;
+            this.controller = controller;
             
             turn_progress = new turnBackgroundWorker(new BackgroundWorker(), new turnTimingBar(turn_timing_bar));
             this.console = new consoleWindow(console_window);
@@ -45,7 +46,7 @@ namespace RealmWarsTestView
 
         private void AttackButton_Click(object sender, EventArgs e)
         {
-            battle.attack(battle.get_enemy());
+            controller.attack(controller.get_enemy());
 
             update_combatants();
 
@@ -56,7 +57,7 @@ namespace RealmWarsTestView
         {
             ICombatant new_combatant = new NPCCombatant("Combatant", new Attributes(8, 12));
 
-            battle.add_combatant(new_combatant);
+            controller.add_combatant(new_combatant);
 
             ConsoleEntity.print(new_combatant.name + " has joined the fight!");
             update_combatants();
@@ -70,17 +71,17 @@ namespace RealmWarsTestView
 
         public void update_combatants()
         {
-            combatantsEntity.update(new List<string>(get_combatants()));
+            combatantsEntity.update(new List<string>(get_formatted_combatants()));
         }
 
         public List<string> get_turns()
         {
-            return battle.turn_manager.timeline.print_timeline();
+            return controller.manager.timeline.print_timeline();
         }
 
-        private IEnumerable<string> get_combatants()
+        private IEnumerable<string> get_formatted_combatants()
         {
-            foreach (ICombatant combatant in battle.get_combatants())
+            foreach (ICombatant combatant in controller.get_combatants())
             {
                 yield return combatant.display();
             }

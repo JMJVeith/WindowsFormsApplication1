@@ -1,5 +1,4 @@
 using System;
-using View;
 
 namespace RealmWarsModel
 {
@@ -9,7 +8,7 @@ namespace RealmWarsModel
         private Phase ActionPhase;
 
 
-        public PlayerTurn(ICombatant owner, TurnManager timeline) : base(owner, timeline)
+        public PlayerTurn(ICombatant owner) : base(owner)
         {
             initialize_phases();
             time_until_turn = this.owner.calc_turn_timing(500);
@@ -39,7 +38,6 @@ namespace RealmWarsModel
 
         public override bool button()
         {
-            attackButtonEntity.button(true);
             return true;
         }
     }

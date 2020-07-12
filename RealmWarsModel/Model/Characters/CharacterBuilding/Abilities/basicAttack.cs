@@ -1,5 +1,4 @@
 ﻿using System;
-using View;
 
 namespace RealmWarsModel
 {
@@ -20,13 +19,13 @@ namespace RealmWarsModel
             this.name = "attack";
         }
 
-        public void activate(ICombatant target)
+        public string activate(ICombatant target)
         {
             int damage = handle_damage(target);
 
-            generateAbilityLog(target, damage);
-
             target.attributes.Health[0] -= damage;
+
+            return generateAbilityLog(target, damage);
         }
 
         private int handle_damage(ICombatant target)
@@ -56,7 +55,7 @@ namespace RealmWarsModel
         private string generateAbilityLog(ICombatant target, int damage)
         {
             string log = user.name + " attacks " + target.name + " for " + damage + " damage";
-            ConsoleEntity.print(user.name + " attacks " + target.name + " for " + damage + " damage");
+            //ConsoleEntity.print(user.name + " attacks " + target.name + " for " + damage + " damage");
             return log;
         }
 
